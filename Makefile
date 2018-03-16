@@ -21,8 +21,8 @@ MLXDIR = 		minilibx_macos/
 MLX = 			$(addprefix $(MLXDIR), $(MLXNAME))
 
 SRCDIR = 		srcs/
-SRCNAME = 		main.c					\
-				exitProgram.c			\
+SRCNAME = 		main.c				\
+			exitProgram.c			\
 
 SRC = 			$(addprefix $(SRCDIR), $(SRCNAME))
 
@@ -36,7 +36,7 @@ CC = 			gcc
 
 all: 			$(NAME)
 
-$(OBJDIR)%.o:	$(SRCDIR)%.c
+$(OBJDIR)%.o:		$(SRCDIR)%.c
 	$(CC) $(FLAGS) -o $@ -c $<
 
 createdir:
