@@ -60,4 +60,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all opti createdir clean fclean re
+.PHONY: all createdir clean fclean re
