@@ -1,0 +1,9 @@
+item.info
+{
+// THIS IS COM
+	item.size = 4 1
+	item.form = [
+	####
+	...#
+	]
+}
