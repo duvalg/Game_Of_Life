@@ -12,7 +12,7 @@
 
 NAME = 			Game_Of_Life
 
-LIBFTNAME = 	libft.a
+LIBFTNAME = 		libft.a
 LIBFTDIR = 		libft/
 LIBFT = 		$(addprefix $(LIBFTDIR), $(LIBFTNAME))
 
