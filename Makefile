@@ -12,7 +12,7 @@
 
 NAME = 			Game_Of_Life
 
-LIBFTNAME = 	libft.a
+LIBFTNAME = 		libft.a
 LIBFTDIR = 		libft/
 LIBFT = 		$(addprefix $(LIBFTDIR), $(LIBFTNAME))
 
@@ -20,12 +20,19 @@ MLXNAME = 		libmlx.a
 MLXDIR = 		minilibx_macos/
 MLX = 			$(addprefix $(MLXDIR), $(MLXNAME))
 
+<<<<<<< HEAD
 SRCNAME = 		main.c					\
 				initStructs.c			\
 				parser.c				\
 				createMap.c				\
 				exitProgram.c
 SRCDIR = 		srcs/
+=======
+SRCDIR = 		srcs/
+SRCNAME = 		main.c				\
+			exitProgram.c			\
+
+>>>>>>> a91a0192b175ce23bd03cc687f1c2d5e3642d389
 SRC = 			$(addprefix $(SRCDIR), $(SRCNAME))
 
 OBJNAME = 		$(SRCNAME:.c=.o)
@@ -38,7 +45,7 @@ CC = 			gcc
 
 all: 			$(NAME)
 
-$(OBJDIR)%.o:	$(SRCDIR)%.c
+$(OBJDIR)%.o:		$(SRCDIR)%.c
 	$(CC) $(FLAGS) -o $@ -c $<
 
 createdir:
