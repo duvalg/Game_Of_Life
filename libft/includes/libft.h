@@ -13,7 +13,7 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 64
 
 # include <sys/types.h>
 # include <sys/stat.h>

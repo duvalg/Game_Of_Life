@@ -20,17 +20,19 @@ MLXNAME = 		libmlx.a
 MLXDIR = 		minilibx_macos/
 MLX = 			$(addprefix $(MLXDIR), $(MLXNAME))
 
-SRCDIR = 		srcs/
 SRCNAME = 		main.c					\
-				exitProgram.c			\
-
+				initStructs.c			\
+				parser.c				\
+				createMap.c				\
+				exitProgram.c
+SRCDIR = 		srcs/
 SRC = 			$(addprefix $(SRCDIR), $(SRCNAME))
 
-OBJDIR = 		obj/
 OBJNAME = 		$(SRCNAME:.c=.o)
+OBJDIR = 		obj/
 OBJ = 			$(addprefix $(OBJDIR), $(OBJNAME))
 
-FLAGS = 		-Werror -Wextra -Wall -O2
+FLAGS = 		-Werror -Wextra -Wall -O3
 LFLAGS = 		-lpthread -D_REENTRANT -framework OpenGL -framework Appkit
 CC = 			gcc
 
@@ -45,7 +47,7 @@ createdir:
 	mkdir -p $(OBJDIR) 2> /dev/null || true
 
 $(NAME): 		createdir $(OBJ)
-	$(CC) $(LFLAGS) $(LIBFT) $(MLX) $(SRC) -o $@
+	$(CC) $(OBJ) $(LIBFT) -o $@
 
 clean:
 	make clean -C $(LIBFTDIR)
@@ -60,4 +62,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all opti createdir clean fclean re
+.PHONY: all createdir clean fclean re

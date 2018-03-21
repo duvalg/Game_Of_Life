@@ -14,7 +14,7 @@
 
 static int	ft_start(const char *s)
 {
-	int		start;
+	size_t	start;
 
 	start = 0;
 	while (s[start] == ' ' || s[start] == '\n' || s[start] == '\t')
@@ -24,12 +24,12 @@ static int	ft_start(const char *s)
 
 static int	ft_end(const char *s)
 {
-	int		end;
+	size_t	end;
 
 	end = ft_strlen((char *)s) - 1;
 	while (s[end] == ' ' || s[end] == '\n' || s[end] == '\t')
 		end--;
-	return (end < 0) ? ft_strlen(s) : end;
+	return ((int)end < 0) ? ft_strlen(s) : end;
 }
 
 char		*ft_strtrim(char const *s)

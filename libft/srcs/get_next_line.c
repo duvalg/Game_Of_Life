@@ -12,104 +12,85 @@
 
 #include "../includes/libft.h"
 
-char			*strsub_clean(char *s, unsigned int start, size_t len)
+static int	read_reste(char **reste, char **line, size_t len)
 {
-	size_t	i;
-	char	*sub;
+	int		i;
+	int		end;
+	char	tmp[len + 1];
 
-	i = 0;
-	if (!s)
-		return (NULL);
-	if (!(sub = (char *)ft_memalloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	while (i < len)
+	tmp[len] = '\0';
+	end = 0;
+	if (!(*line = ft_strnew(len)))
+		return (-1);
+	i = -1;
+	while ((*reste)[++i] != '\n' && (*reste)[i] != '\0')
+		(*line)[i] = (*reste)[i];
+	if ((*reste)[i] == '\n')
 	{
-		sub[i] = s[start];
+		end = 1;
 		i++;
-		start++;
 	}
-	sub[len] = '\0';
-	free(s);
-	return (sub);
-}
-
-int				read_overtake(char **overtake, char *tmp, char **line, int ret)
-{
-	int i;
-	int overtake_size;
-
-	overtake_size = ft_strlen(*overtake);
-	if (*overtake && overtake_size > 0 && ret == 0)
-	{
-		i = 0;
-		if (!(tmp = (char *)ft_memalloc(overtake_size)))
-			exit(0);
-		while ((*overtake)[i] != '\0' && (*overtake)[i] != '\n')
-		{
-			tmp[i] = (*overtake)[i];
-			i++;
-		}
-		i = ((*overtake)[i] == '\n') ? i + 1 : i;
-		tmp[i] = '\0';
-		if (!(*overtake = strsub_clean(*overtake, i, ft_strlen(*overtake) - i)))
-			exit(0);
-		*line = tmp;
-		if ((*overtake[0]) == '\0')
-			overtake = NULL;
+	ft_bzero(tmp, len + 1);
+	ft_strcpy(tmp, *reste + i);
+	ft_bzero(*reste, len);
+	ft_strcpy(*reste, tmp);
+	if (end == 1)
 		return (1);
-	}
 	return (0);
 }
 
-int				add_in_tmp(char *buff, char *tmp, char **line, char **overtake)
+static int	read_buff(char *buff, char **line, char **reste, size_t len)
 {
-	int	i;
+	int		i;
+	char	tmp[len + 1];
 
+	ft_bzero(tmp, len + 1);
 	i = -1;
-	if (!(tmp = ft_memalloc(BUFF_SIZE + ft_strlen(*overtake) + 1)))
-		exit(0);
-	if (ft_strlen(*overtake))
-	{
-		buff = ft_strjoin(*overtake, buff);
-		ft_strdel(overtake);
-	}
-	while (buff[++i] != '\n' && buff[i] != '\0')
+	while (buff[++i] != '\n' && buff[i])
 		tmp[i] = buff[i];
-	tmp[i] = '\0';
-	*line = (!*line) ? ft_strnew(ft_strlen(tmp)) : *line;
-	*line = ft_strjoin_free(*line, tmp, 1);
-	ft_strdel(&tmp);
+	if (!(*line))
+	{
+		if (!(*line = ft_strdup(tmp)))
+			return (-1);
+	}
+	else
+		*line = ft_strjoin_free(*line, tmp, 1);
 	if (buff[i] == '\n')
 	{
-		if (buff[i + 1])
-			*overtake = strsub_clean(buff, i + 1, ft_strlen(buff) - i);
+		if (!(*reste = ft_strnew(len - i)))
+			return (-1);
+		i++;
+		ft_strcpy(*reste, buff + i);
 		return (1);
 	}
 	return (0);
 }
 
-int				get_next_line(const int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
 	int			ret;
+	int			success;
 	char		buff[BUFF_SIZE + 1];
-	char		*tmp;
-	static char	*overtake = NULL;
+	static char	*reste = NULL;
 
 	if (fd < 0 || !line)
 		return (-1);
-	tmp = NULL;
 	*line = NULL;
+	success = 0;
+	ret = 0;
+	if (ft_strlen(reste))
+		if (read_reste(&reste, line, ft_strlen(reste)) == 1)
+			return (1);
+	ft_bzero(buff, BUFF_SIZE + 1);
 	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[ret] = '\0';
-		if (add_in_tmp((char *)&buff, tmp, (char **)line, &overtake) == 1)
+		if ((success = read_buff((char*)&buff, line, &reste, BUFF_SIZE)) == -1)
+			return (-1);
+		if (success == 1)
 			return (1);
 	}
-	if (read_overtake(&overtake, tmp, line, ret) == 1)
-		return (1);
-	if (ret == -1)
-		return (-1);
-	else if (ret == 0 && ft_strlen(*line) > 0)
-		return (1);
-	return (ret == 0) ? 0 : 1;
+	if (!ft_strlen(reste) && ret == 0 && !ft_strlen(*line))
+		return (0);
+	return (ret != -1) ? 1 : -1;
 }

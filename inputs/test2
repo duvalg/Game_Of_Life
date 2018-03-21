@@ -1,0 +1,10 @@
+item.create
+{
+	item.size = 3 3
+	item.form = [
+	.##
+	##.
+	.#.
+	]
+	item.pos = 25 50
+}
