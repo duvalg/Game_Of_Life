@@ -20,19 +20,12 @@ MLXNAME = 		libmlx.a
 MLXDIR = 		minilibx_macos/
 MLX = 			$(addprefix $(MLXDIR), $(MLXNAME))
 
-<<<<<<< HEAD
 SRCNAME = 		main.c					\
-				initStructs.c			\
-				parser.c				\
-				createMap.c				\
-				exitProgram.c
+			initStructs.c				\
+			parser.c				\
+			createMap.c				\
+			exitProgram.c
 SRCDIR = 		srcs/
-=======
-SRCDIR = 		srcs/
-SRCNAME = 		main.c				\
-			exitProgram.c			\
-
->>>>>>> a91a0192b175ce23bd03cc687f1c2d5e3642d389
 SRC = 			$(addprefix $(SRCDIR), $(SRCNAME))
 
 OBJNAME = 		$(SRCNAME:.c=.o)
